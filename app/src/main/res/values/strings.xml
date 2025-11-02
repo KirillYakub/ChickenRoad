@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Chicken Road</string>
+    <string name="play">PLAY</string>
+    <string name="rating">RATING</string>
+    <string name="settings">SETTINGS</string>
+    <string name="load_rotation_label">Load rotation</string>
+    <string name="rotation_anim_label">Rotation anim</string>
+    <string name="loading">LOADING</string>
+    <string name="component_click_anim">Component click anim</string>
+    <string name="music_label">MUSIC:</string>
+    <string name="sound_label">SOUND:</string>
+    <string name="victory">WIN!</string>
+    <string name="game_over">GAME OVER</string>
+    <string name="try_again">Try Again</string>
+    <string name="levels">LEVELS</string>
+    <string name="you_need_to_find_a_pair">You need to find a pair</string>
+</resources>
