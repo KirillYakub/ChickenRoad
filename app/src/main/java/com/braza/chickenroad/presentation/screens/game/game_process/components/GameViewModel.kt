@@ -83,9 +83,10 @@ class GameViewModel @Inject constructor(
     }
 
     fun onItemClickCheck(item: GameElementsModel) {
-        if(gameProcessState.isGameStart && !item.isClicked) {
+        if(gameProcessState.isGameStart) {
             val itemId = gameElementsList.indexOfFirst { it.id == item.id }
-            if (itemId != -1 && (levelsJob == null || !levelsJob!!.isActive)) {
+            if (itemId != -1 && !gameElementsList[itemId].isClicked
+                && (levelsJob == null || !levelsJob!!.isActive)) {
                 levelsJob = viewModelScope.launch {
                     gameElementsList[itemId] = gameElementsList[itemId].copy(
                         isClicked = true
