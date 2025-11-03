@@ -4,6 +4,7 @@ import android.content.Context
 import com.braza.chickenroad.data.DatastorePreferences
 import com.braza.chickenroad.domain.repository.FirstInputRepos
 import com.braza.chickenroad.domain.repository.MaxOpenedLevelRepos
+import com.braza.chickenroad.domain.repository.RatingRepos
 import com.braza.chickenroad.domain.repository.SettingsRepos
 import dagger.Module
 import dagger.Provides
@@ -43,5 +44,12 @@ object DatastoreModule {
     fun provideMaxOpenedLevelRepos(
         datastorePreferences: DatastorePreferences
     ): MaxOpenedLevelRepos =
+        datastorePreferences
+
+    @Provides
+    @Singleton
+    fun provideRatingRepos(
+        datastorePreferences: DatastorePreferences
+    ): RatingRepos =
         datastorePreferences
 }

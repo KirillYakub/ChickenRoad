@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -13,10 +14,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.braza.chickenroad.R
 import com.braza.chickenroad.presentation.common.NavigationButtonComponent
+import com.braza.chickenroad.presentation.common.TextWithBorderComponent
 import com.braza.chickenroad.presentation.screens.game.game_process.components.GameViewModel
 
 @Composable
@@ -43,6 +47,12 @@ fun GameStartButton(
             NavigationButtonComponent(
                 buttonRes = R.drawable.button_go,
                 onClick = model::gameProcessStart
+            )
+            Spacer(modifier = Modifier.height(2.dp))
+            TextWithBorderComponent(
+                text = "LEVEL ${model.currentLevel}",
+                font = Font(R.font.futura_pt),
+                style = MaterialTheme.typography.titleMedium
             )
         }
     }

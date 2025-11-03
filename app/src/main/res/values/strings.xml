@@ -14,4 +14,10 @@
     <string name="try_again">Try Again</string>
     <string name="levels">LEVELS</string>
     <string name="you_need_to_find_a_pair">You need to find a pair</string>
+    <string name="time">TIME</string>
+    <string name="game_completed">GAME COMPLETED!</string>
+    <string name="rules">RULES</string>
+    <string name="desc_part_one">Click on the correct elements and complete levels within the time limit! You need to find multiple pairs of the element indicated at the beginning of the game. If you click incorrectly, the element closes back.</string>
+    <string name="desc_part_twp">Do not forget to compete on the leaderboard with other players to maintain your skill!</string>
+    <string name="enjoy_the_game">Enjoy the game!</string>
 </resources>

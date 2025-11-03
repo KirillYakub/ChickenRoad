@@ -1,5 +1,6 @@
 package com.braza.chickenroad.presentation.screens.game.game_process.composable
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,13 +22,14 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.braza.chickenroad.R
+import com.braza.chickenroad.domain.model.GameElementsModel
 import com.braza.chickenroad.presentation.screens.game.game_process.components.GameViewModel
 import com.braza.chickenroad.util.createCustomClickEffect
 
 @Composable
 fun ColumnScope.GameElementsField(
     model: GameViewModel,
-    onItemClick: (Int) -> Unit
+    onItemClick: (GameElementsModel) -> Unit
 ) {
     val density = LocalDensity.current
     var innerElementSize by remember { mutableStateOf(0.dp) }
@@ -36,7 +38,7 @@ fun ColumnScope.GameElementsField(
         modifier = Modifier
             .fillMaxWidth()
             .weight(5f),
-        verticalArrangement = Arrangement.SpaceAround
+        verticalArrangement = Arrangement.SpaceEvenly
     ) {
         model.gameElementsList.chunked(3).forEach { itemsRow ->
             Row(
@@ -48,10 +50,7 @@ fun ColumnScope.GameElementsField(
                     Box(
                         modifier = Modifier
                             .weight(1f)
-                            .createCustomClickEffect {
-                                if(model.gameProcessState.isGameStart && !item.isClicked)
-                                    onItemClick(item.id)
-                            },
+                            .createCustomClickEffect { onItemClick(item) },
                         contentAlignment = Alignment.Center
                     ) {
                         Image(
@@ -66,7 +65,12 @@ fun ColumnScope.GameElementsField(
                             }
                         )
                         Image(
-                            painter = painterResource(id = item.res),
+                            painter = painterResource(id =
+                                if(model.gameProcessState.isGameStart && !item.isClicked)
+                                    R.drawable.closed_item
+                                else
+                                    item.res
+                            ),
                             contentDescription = null,
                             contentScale = ContentScale.Fit,
                             modifier = Modifier.size(innerElementSize)

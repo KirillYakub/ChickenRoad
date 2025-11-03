@@ -6,7 +6,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.braza.chickenroad.domain.repository.RatingRepos
 import com.braza.chickenroad.domain.repository.leaders.GetLeadersRepos
+import com.braza.chickenroad.util.formatTimeFromSeconds
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -15,7 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RatingViewModel @Inject constructor(
-    private val getLeadersRepos: GetLeadersRepos
+    private val getLeadersRepos: GetLeadersRepos,
+    private val ratingRepos: RatingRepos,
 ) : ViewModel() {
 
     var leadersList = mutableStateListOf<Pair<String, String>>()
@@ -25,7 +28,14 @@ class RatingViewModel @Inject constructor(
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
+            val ratingTime = ratingRepos.readRatingTime()
+            if(ratingTime != null) {
+                leadersList.add(
+                    Pair("You", formatTimeFromSeconds(ratingTime.toLong()))
+                )
+            }
             leadersList.addAll(getLeadersRepos.getAllLeaders())
+            leadersList.sortBy { it.second }
             delay(2000)
             isLoading = false
         }

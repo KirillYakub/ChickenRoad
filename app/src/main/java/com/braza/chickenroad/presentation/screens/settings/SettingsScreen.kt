@@ -28,6 +28,7 @@ import kotlinx.coroutines.delay
 fun SettingsScreen(
     state: SettingsState,
     onBackClick: () -> Unit,
+    onRulesClick: () -> Unit,
     onPrivacyClick: () -> Unit,
     onTermsClick: () -> Unit,
     onMusicClick: (Boolean) -> Unit,
@@ -51,6 +52,7 @@ fun SettingsScreen(
                 TopBarComponent(
                     text = stringResource(id = R.string.settings),
                     onBackClick = onBackClick,
+                    onRulesClick = onRulesClick,
                     backButtonSizeDp = { dpSize ->
                         innerBoxPadding = dpSize
                         scaffoldContainerPadding = dpSize / PADDING_CALCULATION_DIVISOR_TINY

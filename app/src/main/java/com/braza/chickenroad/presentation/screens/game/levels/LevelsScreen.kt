@@ -27,6 +27,7 @@ fun LevelsScreen(
     isLoading: Boolean,
     maxOpenedLevel: Int,
     onBackClick: () -> Unit,
+    onRulesClick: () -> Unit,
     onLevelSelected: (Int) -> Unit
 ) {
     var scaffoldContainerPadding by remember { mutableStateOf(0.dp) }
@@ -47,6 +48,7 @@ fun LevelsScreen(
                 TopBarComponent(
                     text = stringResource(R.string.levels),
                     onBackClick = onBackClick,
+                    onRulesClick = onRulesClick,
                     backButtonSizeDp = { dpSize ->
                         innerBoxPadding = dpSize
                         scaffoldContainerPadding = dpSize / PADDING_CALCULATION_DIVISOR_TINY

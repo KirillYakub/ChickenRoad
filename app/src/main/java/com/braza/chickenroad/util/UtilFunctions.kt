@@ -1,5 +1,6 @@
 package com.braza.chickenroad.util
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -12,12 +13,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.braza.chickenroad.R
+import com.braza.chickenroad.presentation.sound.ClickViewModel
 
 @Composable
 fun Modifier.createCustomClickEffect(
     onClick: () -> Unit
 ): Modifier {
+
+    val model = hiltViewModel<ClickViewModel>()
     var isPressed by remember { mutableStateOf(false) }
     val componentClickScale by animateFloatAsState(
         targetValue = if (isPressed) 0.9f else 1f,
@@ -36,7 +41,10 @@ fun Modifier.createCustomClickEffect(
                     isPressed = true
                     tryAwaitRelease()
                     isPressed = false
-                    clickDelay(onClick)
+                    clickDelay {
+                        model.startClick()
+                        onClick()
+                    }
                 }
             )
         }
@@ -49,4 +57,11 @@ private fun clickDelay(onClick: () -> Unit) {
         clickTime = tempTime
         onClick()
     }
+}
+
+@SuppressLint("DefaultLocale")
+fun formatTimeFromSeconds(seconds: Long): String {
+    val minutes = seconds / 60
+    val remainingSeconds = seconds % 60
+    return String.format("%02d:%02d", minutes, remainingSeconds)
 }

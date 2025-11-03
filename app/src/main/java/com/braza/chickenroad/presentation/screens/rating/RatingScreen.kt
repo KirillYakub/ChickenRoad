@@ -27,7 +27,8 @@ import kotlinx.coroutines.delay
 fun RatingScreen(
     leadersList: SnapshotStateList<Pair<String, String>>,
     isLoading: Boolean,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onRulesClick: () -> Unit
 ) {
     var scaffoldContainerPadding by remember { mutableStateOf(0.dp) }
     var innerBoxPadding by remember { mutableStateOf(0.dp) }
@@ -47,6 +48,7 @@ fun RatingScreen(
                 TopBarComponent(
                     text = stringResource(id = R.string.rating),
                     onBackClick = onBackClick,
+                    onRulesClick = onRulesClick,
                     backButtonSizeDp = { dpSize ->
                         innerBoxPadding = dpSize
                         scaffoldContainerPadding = dpSize / PADDING_CALCULATION_DIVISOR_TINY

@@ -1,7 +1,10 @@
 package com.braza.chickenroad.presentation.screens.game.game_result
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,12 +16,15 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -31,21 +37,44 @@ import androidx.compose.ui.unit.dp
 import com.braza.chickenroad.R
 import com.braza.chickenroad.presentation.common.GradientTextWithBorderComponent
 import com.braza.chickenroad.presentation.common.NavigationButtonComponent
+import com.braza.chickenroad.presentation.common.TextWithBorderComponent
+import com.braza.chickenroad.presentation.ui.theme.Orange
+import com.braza.chickenroad.util.Constants.MAX_LEVEL
 import com.braza.chickenroad.util.createCustomClickEffect
+import kotlinx.coroutines.delay
 
 @SuppressLint("ConfigurationScreenWidthHeight")
 @Composable
 fun GameResultScreen(
     isVictory: Boolean = false,
+    currentLevel: Int = 1,
     timeAsString: String = "",
     onHomeClick: () -> Unit,
     onRestartClick: () -> Unit,
     onNextClick: () -> Unit
 ) {
+    val alpha = remember { Animatable(0f) }
+    LaunchedEffect(Unit) {
+        delay(100)
+        alpha.animateTo(
+            targetValue = 1f,
+            animationSpec = tween(durationMillis = 1000)
+        )
+    }
+
     Box(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .alpha(alpha.value),
         contentAlignment = Alignment.Center
     ) {
+        Image(
+            painter = painterResource(id = R.drawable.game_result_bg),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.fillMaxSize()
+        )
+
         val density = LocalDensity.current
         var boxWidth by remember { mutableStateOf(0.dp) }
         var boxHeight by remember { mutableStateOf(0.dp) }
@@ -118,15 +147,24 @@ fun GameResultScreen(
                         modifier = Modifier.createCustomClickEffect(onClick = onRestartClick)
                     )
                 }
-                NavigationButtonComponent(
-                    buttonRes = if(isVictory) R.drawable.active_button_next else R.drawable.non_active_button_next,
-                    onClick = {
-                        if(isVictory)
-                            onNextClick()
-                    }
-                )
+                if(currentLevel != MAX_LEVEL) {
+                    NavigationButtonComponent(
+                        buttonRes = if(isVictory) R.drawable.active_button_next else R.drawable.non_active_button_next,
+                        onClick = {
+                            if (isVictory)
+                                onNextClick()
+                        }
+                    )
+                }
+                else if(isVictory) {
+                    TextWithBorderComponent(
+                        text = stringResource(R.string.game_completed),
+                        textColor = Orange,
+                        font = Font(R.font.futura_pt),
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                }
             }
         }
-
     }
 }

@@ -14,12 +14,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import com.braza.chickenroad.R
+import com.braza.chickenroad.presentation.navigation.NavRoutes
 import com.braza.chickenroad.util.createCustomClickEffect
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBarComponent(
     text: String,
+    currentRoute: String? = null,
+    onRulesClick: () -> Unit = {},
     onBackClick: () -> Unit,
     backButtonSizeDp: (Dp) -> Unit
 ) {
@@ -38,6 +41,15 @@ fun TopBarComponent(
                         }
                     }
             )
+        },
+        actions = {
+            if(currentRoute != NavRoutes.RulesScreenRoute.route) {
+                Image(
+                    painter = painterResource(id = R.drawable.rules_button),
+                    contentDescription = null,
+                    modifier = Modifier.createCustomClickEffect(onClick = onRulesClick)
+                )
+            }
         },
         title = {
             GradientTextWithBorderComponent(

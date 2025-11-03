@@ -22,8 +22,8 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.braza.chickenroad.R
-import com.braza.chickenroad.navigation.NavRoutes
 import com.braza.chickenroad.presentation.common.NavigationButtonComponent
+import com.braza.chickenroad.presentation.navigation.NavRoutes
 import com.braza.chickenroad.util.Constants.BUTTON_WIDTH_ASPECT_RATIO
 import com.braza.chickenroad.util.Constants.PADDING_CALCULATION_DIVISOR_SMALL
 
