@@ -1,0 +1,43 @@
+package com.chicken.chickenroad.presentation.screens.rating
+
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.chicken.chickenroad.domain.repository.RatingRepos
+import com.chicken.chickenroad.domain.repository.leaders.GetLeadersRepos
+import com.chicken.chickenroad.util.formatTimeFromSeconds
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+@HiltViewModel
+class RatingViewModel @Inject constructor(
+    private val getLeadersRepos: GetLeadersRepos,
+    private val ratingRepos: RatingRepos,
+) : ViewModel() {
+
+    var leadersList = mutableStateListOf<Pair<String, String>>()
+        private set
+    var isLoading by mutableStateOf(true)
+        private set
+
+    init {
+        viewModelScope.launch(Dispatchers.IO) {
+            val ratingTime = ratingRepos.readRatingTime()
+            if(ratingTime != null) {
+                leadersList.add(
+                    Pair("You", formatTimeFromSeconds(ratingTime.toLong()))
+                )
+            }
+            leadersList.addAll(getLeadersRepos.getAllLeaders())
+            leadersList.sortBy { it.second }
+            delay(2000)
+            isLoading = false
+        }
+    }
+}

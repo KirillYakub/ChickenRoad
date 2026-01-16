@@ -1,0 +1,74 @@
+package com.chicken.chickenroad.presentation.screens.rating
+
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import com.chicken.chickenroad.R
+import com.chicken.chickenroad.presentation.common.LoadingContent
+import com.chicken.chickenroad.presentation.common.TopBarComponent
+import com.chicken.chickenroad.util.Constants.PADDING_CALCULATION_DIVISOR_TINY
+import kotlinx.coroutines.delay
+
+@Composable
+fun RatingScreen(
+    leadersList: SnapshotStateList<Pair<String, String>>,
+    isLoading: Boolean,
+    onBackClick: () -> Unit,
+    onRulesClick: () -> Unit
+) {
+    var scaffoldContainerPadding by remember { mutableStateOf(0.dp) }
+    var innerBoxPadding by remember { mutableStateOf(0.dp) }
+
+    if(!isLoading) {
+        val alpha = remember { Animatable(0f) }
+        LaunchedEffect(Unit) {
+            delay(100)
+            alpha.animateTo(
+                targetValue = 1f,
+                animationSpec = tween(durationMillis = 1000)
+            )
+        }
+
+        Scaffold(
+            topBar = {
+                TopBarComponent(
+                    text = stringResource(id = R.string.rating),
+                    onBackClick = onBackClick,
+                    onRulesClick = onRulesClick,
+                    backButtonSizeDp = { dpSize ->
+                        innerBoxPadding = dpSize
+                        scaffoldContainerPadding = dpSize / PADDING_CALCULATION_DIVISOR_TINY
+                    }
+                )
+            },
+            containerColor = Color.Transparent,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = scaffoldContainerPadding)
+                .padding(top = scaffoldContainerPadding)
+                .alpha(alpha.value),
+        ) { paddingValues ->
+            RatingContent(
+                leadersList = leadersList,
+                paddingValues = paddingValues,
+                innerPaddingDp = innerBoxPadding,
+            )
+        }
+    }
+    else
+        LoadingContent()
+}

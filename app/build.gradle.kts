@@ -8,11 +8,11 @@ plugins {
 }
 
 android {
-    namespace = "com.braza.chickenroad"
+    namespace = "com.chicken.chickenroad"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.braza.chickenroad"
+        applicationId = "com.chicken.chickenroad"
         minSdk = 26
         targetSdk = 36
         versionCode = 1
